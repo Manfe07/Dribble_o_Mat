@@ -31,14 +31,16 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="37"/>
-                        <RowDefinition Height="418*"/>
-                        <RowDefinition Height="423*"/>
-                        <RowDefinition Height="143*"/>
+                        <RowDefinition Height="277"/>
+                        <RowDefinition Height="255*"/>
+                        <RowDefinition Height="321*"/>
+                        <RowDefinition Height="131*"/>
                     </Grid.RowDefinitions>
                     <Button x:Name="button_Start" Content="Start" HorizontalAlignment="Left" Margin="10,10,0,7" Width="75" Background="#FFFF6800" Click="button_Click" Grid.ColumnSpan="2"/>
-                    <TextBlock x:Name="label2" DataContext="{Binding ElementName=_this}" Grid.Row="1" FontSize="200"  Margin="0,0,0,0" Background="#FFFF8B00" Grid.ColumnSpan="2" Text="{Binding BumperListener.Settings.Time_Remaining, StringFormat={}{0:mm}:{0:ss}.{0:ff}, FallbackValue=00.00}" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-                    <Label x:Name="label" DataContext="{Binding ElementName=_this}" Content="{Binding Path=BumperListener.CurrentBumps, FallbackValue=0}"  FontSize="200" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Height="446" VerticalAlignment="Top" Margin="0,0,0,0" Background="#FFFF8B00" Grid.ColumnSpan="2"/>
-                    <Label x:Name="label1" DataContext="{Binding ElementName=_this}" Content="{Binding Path=BumperListener.Settings.Highscore, FallbackValue=0}" ContentStringFormat="HIGHSCORE: {0}" Grid.Row="3" FontSize="100" Background="#FFFF8B00" Grid.ColumnSpan="2"/>
+                    <TextBlock x:Name="label2" DataContext="{Binding ElementName=_this}" Grid.Row="2" FontSize="200"  Margin="651,0,713,0" Background="#FFFF8B00" Text="{Binding BumperListener.Settings.Time_Remaining, StringFormat={}{0:mm}:{0:ss}.{0:ff}, FallbackValue=00.00}" HorizontalAlignment="Center" Grid.Column="1" Width="474" Height="242" VerticalAlignment="Top"/>
+                    <Label x:Name="label" DataContext="{Binding ElementName=_this}" Content="{Binding Path=BumperListener.CurrentBumps, FallbackValue=0}"  FontSize="200" Grid.Row="3" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Margin="-10,10,10,0" Background="#FFFF8B00" Grid.ColumnSpan="2" Height="301" VerticalAlignment="Top"/>
+                    <Label x:Name="label1" DataContext="{Binding ElementName=_this}" Content="{Binding Path=BumperListener.Settings.Highscore, FallbackValue=0}" ContentStringFormat="HIGHSCORE: {0}" Grid.Row="4" FontSize="100" Background="#FFFF8B00" Grid.ColumnSpan="2"/>
+                    <TextBlock x:Name="label3" DataContext="{Binding ElementName=_this}" Grid.Row="1" FontSize="200"  Margin="651,10,713,0" Background="#FFFF8B00" Text="{Binding BumperListener.Settings.Time_Remaining, FallbackValue=00.00, StringFormat=\{0:mm\}:\{0:ss\}.\{0:ff\}}" HorizontalAlignment="Center" Grid.Column="1" Width="474" Height="242" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings">
