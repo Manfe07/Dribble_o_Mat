@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dribble_O_Mat_2.1", "Dribble_O_Mat_2.1\Dribble_O_Mat_2.1.csproj", "{ECD80B3E-7A5C-4F4D-BE2D-F2DD824753F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monitor_Software", "Dribble_O_Mat_2.1\Monitor_Software.csproj", "{ECD80B3E-7A5C-4F4D-BE2D-F2DD824753F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB75C274-3890-4E78-8AB1-D81007A10968}
 	EndGlobalSection
 EndGlobal
