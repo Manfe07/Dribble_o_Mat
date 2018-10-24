@@ -63,11 +63,10 @@ namespace Dribble_O_Mat_2._1
 
         public void SerialDisconnect()
         {
-            if (_serialPort != null && _serialPort.IsOpen)      //If seriel is open...
-                _serialPort.Close();                            //... close seriel
+            if (_serialPort != null && _serialPort.IsOpen) _serialPort.Close();
 
-            _mainWindow.SerialConnectButton.IsEnabled = true;       //enable "Connect" Button
-            _mainWindow.SerialDisconnectButton.IsEnabled = false;   //disable "Disconnect" Button
+            _mainWindow.SerialConnectButton.IsEnabled = true;
+            _mainWindow.SerialDisconnectButton.IsEnabled = false;
         }
 
 
