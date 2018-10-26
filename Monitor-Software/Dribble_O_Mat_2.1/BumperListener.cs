@@ -102,7 +102,7 @@ namespace Dribble_O_Mat_2._1
 
             var countdown = new System.Timers.Timer(50);
 
-            var finishTime = DateTime.Now + new TimeSpan(0,0,5);
+            var finishTime = DateTime.Now + new TimeSpan(0,0,4);
 
             var finished = false;
             
@@ -117,10 +117,10 @@ namespace Dribble_O_Mat_2._1
                 App.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     Debug.WriteLine(remaining);
-                    if (remaining.Seconds > 2)
+                    if (remaining.Seconds > 1)
                         Settings.GameModeText = "READY";
                     else if (remaining.Seconds > 0)
-                        Settings.GameModeText = "Set";
+                        Settings.GameModeText = "SET";
                     Debug.WriteLine(Settings.GameModeText);
                     //this.Settings.Time_Remaining = remaining;
 
