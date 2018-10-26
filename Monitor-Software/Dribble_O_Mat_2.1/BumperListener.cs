@@ -105,16 +105,25 @@ namespace Dribble_O_Mat_2._1
             var finishTime = DateTime.Now + new TimeSpan(0,0,5);
 
             var finished = false;
+            
+
+            this.CurrentBumps = 0;
+
             countdown.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
             {
                 var currentTime = DateTime.Now;
-
+                var remaining = finishTime - currentTime;
+                 
                 App.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    var remaining = finishTime - currentTime;
                     Debug.WriteLine(remaining);
-                    this.CurrentBumps = 0;
-                    this.Settings.Time_Remaining = remaining;
+                    if (remaining.Seconds > 2)
+                        Settings.GameModeText = "READY";
+                    else if (remaining.Seconds > 0)
+                        Settings.GameModeText = "Set";
+                    Debug.WriteLine(Settings.GameModeText);
+                    //this.Settings.Time_Remaining = remaining;
+
                 }));
 
                 if (currentTime > finishTime)
@@ -122,6 +131,7 @@ namespace Dribble_O_Mat_2._1
                     countdown.Stop();
                     App.Current.Dispatcher.BeginInvoke(new Action(() =>
                     {
+                        this.Settings.GameModeText = "GO!";
                         Start();
                     }));
                 }
@@ -174,6 +184,7 @@ namespace Dribble_O_Mat_2._1
                    this.Settings.Running = false;
                    status = false;
                    taster = true;
+                   this.Settings.GameModeText = "FINISH";
 
                    if (this.CurrentBumps > this.Settings.Highscore)
                    {

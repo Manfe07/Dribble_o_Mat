@@ -17,6 +17,13 @@ namespace Dribble_O_Mat_2._1
             set { this.SetValue(HighscoreProperty, value); }
         }
 
+        public static readonly DependencyProperty GameModeTextProperty = DependencyProperty.Register("GameModeText", typeof(string), typeof(Settings), new UIPropertyMetadata("Hallo"));
+
+        public string GameModeText
+        {
+            get { return (string)this.GetValue(GameModeTextProperty); }
+            set { this.SetValue(GameModeTextProperty, value); }
+        }
 
         public static readonly DependencyProperty Time_DurationProperty = DependencyProperty.Register("Time_Duration", typeof(TimeSpan), typeof(Settings), new UIPropertyMetadata(new TimeSpan(0,0,30)));
 
@@ -52,5 +59,8 @@ namespace Dribble_O_Mat_2._1
             get { return (Boolean)this.GetValue(RunningProperty); }
             set { this.SetValue(RunningProperty, value); }
         }
+
+
+
     }
 }

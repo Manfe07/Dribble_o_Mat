@@ -31,14 +31,15 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="37"/>
-                        <RowDefinition Height="418*"/>
-                        <RowDefinition Height="423*"/>
-                        <RowDefinition Height="143*"/>
+                        <RowDefinition Height="520*"/>
+                        <RowDefinition Height="292*"/>
+                        <RowDefinition Height="173*"/>
                     </Grid.RowDefinitions>
-                    <Button x:Name="button_Start" Content="Start" HorizontalAlignment="Left" Margin="10,10,0,7" Width="75" Background="#FFFF6800" Click="button_Click" Grid.ColumnSpan="2"/>
-                    <TextBlock x:Name="label2" DataContext="{Binding ElementName=_this}" Grid.Row="1" FontSize="200"  Margin="0,0,0,0" Background="#FFFF8B00" Grid.ColumnSpan="2" Text="{Binding BumperListener.Settings.Time_Remaining, StringFormat={}{0:mm}:{0:ss}.{0:ff}, FallbackValue=00.00}" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
-                    <Label x:Name="label" DataContext="{Binding ElementName=_this}" Content="{Binding Path=BumperListener.CurrentBumps, FallbackValue=0}"  FontSize="200" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Height="446" VerticalAlignment="Top" Margin="0,0,0,0" Background="#FFFF8B00" Grid.ColumnSpan="2"/>
-                    <Label x:Name="label1" DataContext="{Binding ElementName=_this}" Content="{Binding Path=BumperListener.Settings.Highscore, FallbackValue=0}" ContentStringFormat="HIGHSCORE: {0}" Grid.Row="3" FontSize="100" Background="#FFFF8B00" Grid.ColumnSpan="2"/>
+                    <Label x:Name="label_GameMode" DataContext="{Binding ElementName=_this}" Content="{Binding BumperListener.Settings.GameModeText, FallbackValue=READY}"  FontSize="180" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Height="249" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                    <TextBlock x:Name="label2" DataContext="{Binding ElementName=_this}" Grid.Row="1" FontSize="200"  Margin="0,0,0,4.8" Text="{Binding BumperListener.Settings.Time_Remaining, FallbackValue=00.00, StringFormat=\{0:mm\}:\{0:ss\}.\{0:ff\}}" VerticalAlignment="Bottom" Height="237" Grid.ColumnSpan="2" TextAlignment="Center"/>
+                    <Label x:Name="label" DataContext="{Binding ElementName=_this}" Content="{Binding BumperListener.CurrentBumps, FallbackValue=0}"  FontSize="200" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Height="282" VerticalAlignment="Top" Margin="0,0.2,0,0" Grid.ColumnSpan="2"/>
+                    <Label x:Name="label1" DataContext="{Binding ElementName=_this}" Content="{Binding BumperListener.Settings.Highscore, FallbackValue=0}" ContentStringFormat="HIGHSCORE: {0}" Grid.Row="3" FontSize="100" Grid.ColumnSpan="2" Margin="0,0,0,-0.4" Height="143" VerticalAlignment="Bottom"/>
+                    <Button x:Name="button_Start" Content="Start" HorizontalAlignment="Left" Margin="10,10,0,6.8" Width="75" Background="#FFFF6800" Click="button_Click" Grid.ColumnSpan="2"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings">
@@ -50,7 +51,7 @@
                 </TabItem.Background>
                 <Grid Background="#FFE5E5E5">
                     <Button x:Name="button_exit" Content="EXIT" Margin="0,0,10,10" Click="button_exit_Click" Height="38" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="140"/>
-                    <GroupBox Margin="242,10,1385,724">
+                    <GroupBox Margin="242,10,0,0" HorizontalAlignment="Left" Width="281" Height="288" VerticalAlignment="Top">
                         <Grid Margin="0,10,0,0">
                             <Label Content="Round Time (Sec)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="110"/>
                             <xctk:DecimalUpDown  x:Name="RoundTimeUpDown"  HorizontalAlignment="Left" Margin="125,16,0,0" VerticalAlignment="Top" Width="132" DataContext="{Binding ElementName=_this}" Value="{Binding BumperListener.GameSettings.RoundTimeSeconds}"/>
@@ -58,7 +59,7 @@
                             <Label Content="Sensitivity" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top"/>
                         </Grid>
                     </GroupBox>
-                    <GroupBox Margin="10,10,1669,724">
+                    <GroupBox Margin="10,10,0,0" HorizontalAlignment="Left" Width="229" Height="288" VerticalAlignment="Top">
                         <Grid Margin="0,10,0,0">
                             <Button x:Name="SerialConnectButton" HorizontalAlignment="Left" Margin="85,37,0,0" VerticalAlignment="Top" Width="120" Height="22" Content="Connect" Click="SerialConnectButton_Click" />
                             <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="85,10,0,0" VerticalAlignment="Top" Width="120" DataContext="{Binding ElementName=_this}" ItemsSource="{Binding BumperListener.SerialSettings.SerialPorts}" SelectedItem="{Binding BumperListener.SerialSettings.SerialPort}"/>
