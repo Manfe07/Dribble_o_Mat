@@ -78,7 +78,7 @@ void set_GameMode(unsigned int value) {
       running = true;
       break;
 
-    case M_finish:
+    case M_stop:
       running = false;
       counter = 0;
       break;

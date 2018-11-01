@@ -4,6 +4,11 @@
 #include "EEPROM.h"
 #include "arduino.h"
 
+
+//Start- and Stop-Byte for message validation
+#define start_byte  B10011101
+#define stop_byte   B11011101
+
 //Bus Message code
 #define C_gameM     B00000000   //Game-Mode (Ready, Set, Start, Stop,)
 #define C_setID     B00000001   //*Set Device-ID of all connected Devices *more information below*
