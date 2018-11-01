@@ -19,8 +19,10 @@ void bus::send_data(byte code, unsigned int value)
   }
   pinMode(TalkPin, OUTPUT);       //set TalkPin as Output
   digitalWrite(TalkPin, HIGH);    //set TalkPin high to use Bus
-  Serial.write(code);             //first write ID and Code combination
-  Serial.write(value);            //second send 2 byte of data/value
+  Serial.write(start_byte);       //First send start-Byte
+  Serial.write(code);             //send ID and Code combination
+  Serial.write(value);            //send 2 byte of data/value
+  Serial.write(stop_byte);        //send stop_byte for validation
   digitalWrite(TalkPin, LOW);     //set TalkPin low to set the bus free
   pinMode(TalkPin, INPUT);        //set TalkPin as Input, to listen if someone talks on the Bus
 }//END void bus::send_data(...)
@@ -28,20 +30,24 @@ void bus::send_data(byte code, unsigned int value)
 
 int bus::get_data(byte& ID, byte& code, unsigned int& value)
 {
-  byte data[3];
-  if (Serial.available() >= 3)
+  byte data[5];
+  if (Serial.available() >= 5)
   {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 5; i++) {
       data[i] = Serial.read();
     }
-    code = (data[0] & B00001111);
-    ID = ((data[0] & B11110000)  >> 4);
-    value = ((data[2] << 8) & data[1]);
-    
-    return 1;   //if data is "valid" return 1
+    if ((data[0] == start_byte) && (data[4] == stop_byte))
+    {
+      code = (data[1] & B00001111);
+      ID = ((data[1] & B11110000)  >> 4);
+      value = ((data[2] << 8) & data[3]);
+      return 1;   //if data is "valid" return 1
+    }
+    else
+      return -1;  //if data is not valid, return -1
   }
   else {
-    return 0;   //if data is not "valid" return 0
+    return -6;   //if not enought bytes available, return -6
   }
 }//END void bus::get_data(...)
 
@@ -49,4 +55,3 @@ int bus::get_data(byte& ID, byte& code, unsigned int& value)
 void bus::set_ID(byte id) {
   ID = (id << 4);
 }//END void bus::set_ID(...)
-

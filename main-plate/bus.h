@@ -5,13 +5,18 @@
 #include "arduino.h"
 
 //Bus Message code
-#define C_Stop      B00000000   //Stop - Stop measuring
-#define C_Start     B00000001   //Start - measuring
-#define C_Countdwn  B00000010   //Start - Countdown
-#define C_setID     B00000011   //*Set Device-ID of all connected Devices *more information below*
-#define C_Value     B00000100   //Counter-Value 
-#define C_setTH     B00000101   //set the threshold of the sensor
-#define C_setTime   B00000111   //set the time for a round
+#define C_gameM     B00000000   //Game-Mode (Ready, Set, Start, Stop,)
+#define C_setID     B00000001   //*Set Device-ID of all connected Devices *more information below*
+#define C_value     B00000010   //Counter-Value 
+#define C_setTH     B00000011   //set the threshold of the sensor
+#define C_setTime   B00000100   //set the time for a round
+
+//Game Mode code
+#define M_ready     B00000010
+#define M_set       B00000011
+#define M_start     B00000001
+#define M_stop      B00000000
+
 
 /*  ---INFO---
  *  if you want to set the device ID, you should ONLY connect the device you want to set the ID

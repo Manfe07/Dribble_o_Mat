@@ -15,7 +15,7 @@ byte my_ID = 1;             //variable for device-ID
 bus bus(TalkPin);
 
 void setup() {
-  
+
   Serial.begin(9600);
 
   //get threshold-value from EEPROM
@@ -32,7 +32,7 @@ void loop() {
     if (digitalRead(5) && !trigger) {
       counter ++;
       trigger = true;
-      bus.send_data(C_Value, counter);
+      bus.send_data(C_value, counter);
     }
     else if (!digitalRead(5) && trigger) {
       trigger = false;
@@ -49,13 +49,8 @@ void serialEvent() {
   if (bus.get_data(msg_ID, code, value)) {  //get data from the bus
 
     switch (code) {
-      case C_Stop:
-        running = false;  //disable measurement
-        counter = 0;      //reset Counter
-        break;
-
-      case C_Start:
-        running = true;   //enable measurement
+      case C_gameM:
+        set_GameMode(value);
         break;
 
       case C_setID:
@@ -66,9 +61,32 @@ void serialEvent() {
         if (msg_ID == my_ID)      //if msg_ID == my_ID
           set_threshold(value);   //set the threshold of the sensor
         break;
+
+      default:
+        break;
     }
   }
 }//END void SerialEvent()
+
+
+void set_GameMode(unsigned int value) {
+  byte mode;
+  mode = (value & B11111111);
+
+  switch (mode) {
+    case M_start:
+      running = true;
+      break;
+
+    case M_finish:
+      running = false;
+      counter = 0;
+      break;
+
+    default:
+      break;
+  }
+}//END void set_GameMode(...)
 
 
 void set_ID(byte ID) {
@@ -85,4 +103,3 @@ void set_threshold(unsigned int value) {
   EEPROM.write(threshold_adr, th1);     //store the bytes in EEPROM
   EEPROM.write(threshold_adr + 1, th2);
 }//END void set_threshold(...)
-
