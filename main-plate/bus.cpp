@@ -3,7 +3,6 @@
 bus::bus(int TP)
 {
   TalkPin = TP;
-  Serial.begin(9600);
 }//END bus::bus(...)
 
 void bus::send_data(byte code, unsigned int value)

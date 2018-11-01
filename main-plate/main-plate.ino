@@ -1,6 +1,5 @@
 #include "bus.h"
 
-
 #define threshold_adr   5   //EEPROM-adress of the threshold
 #define ID_adr         10   //EEPROM-adress of the BUS-ID
 
@@ -16,13 +15,14 @@ byte my_ID = 1;             //variable for device-ID
 bus bus(TalkPin);
 
 void setup() {
+  
+  Serial.begin(9600);
 
   //get threshold-value from EEPROM
   threshold = ((EEPROM.read(threshold_adr) << 8) | EEPROM.read(threshold_adr + 1));
 
   //get Device-ID from EEPROM
   set_ID(EEPROM.read(ID_adr));
-
 
 }//END void setup()
 
