@@ -9,7 +9,7 @@ bus::bus(int TP)
 int bus::send_data(byte code, unsigned int value)
 {
   if (Serial.available() == 0) {  //check if data is available, befor sending data on the bus
-    code &= B00001111;              //make sure that code only uses last 4Bit
+    code &= 0x0F;              //make sure that code only uses last 4Bit
     code |= ID;                     //integrade ID(0000AAAA) into code(0000CCCC) => code = AAAACCCC
 
     float time_end = millis() + time_out;   //Define time for timeout

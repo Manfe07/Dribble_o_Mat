@@ -23,6 +23,7 @@ void setup() {
 
   //get Device-ID from EEPROM
   set_ID(EEPROM.read(ID_adr));
+//  set_ID(1);
 
 }//END void setup()
 
