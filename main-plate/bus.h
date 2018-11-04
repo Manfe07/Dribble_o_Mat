@@ -7,14 +7,14 @@
 
 //Start- and Stop-Byte for message validation
 #define start_byte  B10011101
-#define stop_byte   B11011101
+#define stop_byte   B00001010
 
 //Bus Message code
-#define C_gameM     B00000000   //Game-Mode (Ready, Set, Start, Stop,)
-#define C_setID     B00000001   //*Set Device-ID of all connected Devices *more information below*
-#define C_value     B00000010   //Counter-Value 
-#define C_setTH     B00000011   //set the threshold of the sensor
-#define C_setTime   B00000100   //set the time for a round
+#define C_gameM     B0000   //Game-Mode (Ready, Set, Start, Stop,)
+#define C_setID     B0001   //*Set Device-ID of all connected Devices *more information below*
+#define C_value     B0010   //Counter-Value
+#define C_setTH     B0011   //set the threshold of the sensor
+#define C_setTime   B0100   //set the time for a round
 
 //Game Mode code
 #define M_ready     B00000010
@@ -35,7 +35,7 @@ class bus{
         byte ID = 0;
   public:
         bus(int);
-        void send_data(byte, unsigned int);
+        int send_data(byte, unsigned int);
         int get_data(byte&, byte&, unsigned int&);
         void set_ID(byte);
 };

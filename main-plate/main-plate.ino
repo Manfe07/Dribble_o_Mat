@@ -3,7 +3,7 @@
 #define threshold_adr   5   //EEPROM-adress of the threshold
 #define ID_adr         10   //EEPROM-adress of the BUS-ID
 
-#define TalkPin 2           //TalkPin of the bus
+#define TalkPin 4           //TalkPin of the bus
 
 unsigned int threshold;     //threshold value of the Sensor
 unsigned int counter = 0;   //counter for the hits
@@ -16,7 +16,7 @@ bus bus(TalkPin);
 
 void setup() {
 
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   //get threshold-value from EEPROM
   threshold = ((EEPROM.read(threshold_adr) << 8) | EEPROM.read(threshold_adr + 1));
@@ -28,6 +28,7 @@ void setup() {
 
 
 void loop() {
+  /*
   if (running) {                              //if running is enabled
     if (digitalRead(5) && !trigger) {
       counter ++;
@@ -38,6 +39,10 @@ void loop() {
       trigger = false;
     }
   }
+  */
+  bus.send_data(C_value, counter);
+  counter++;
+  delay(1000);
 }//END void loop()
 
 
@@ -71,7 +76,7 @@ void serialEvent() {
 
 void set_GameMode(unsigned int value) {
   byte mode;
-  mode = (value & B11111111);
+  mode = (value & 0xFF);
 
   switch (mode) {
     case M_start:
@@ -98,8 +103,8 @@ void set_ID(byte ID) {
 
 void set_threshold(unsigned int value) {
   threshold = value;
-  byte th1 = (value >> 8);              //splitt the threshold into two bytes
-  byte th2 = (value & B11111111);
+  byte th1 = ((value & 0xFF00) >> 8);              //splitt the threshold into two bytes
+  byte th2 = (value & 0x00FF);
   EEPROM.write(threshold_adr, th1);     //store the bytes in EEPROM
   EEPROM.write(threshold_adr + 1, th2);
 }//END void set_threshold(...)
