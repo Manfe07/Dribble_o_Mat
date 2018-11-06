@@ -41,9 +41,10 @@ void loop() {
     }
   }
   */
-  bus.send_data(C_value, counter);
-  counter++;
-  delay(1000);
+  bus.send_data(C_value, 1);
+  delay(250);
+  bus.send_data(C_value, 0);
+  delay(250);
 }//END void loop()
 
 

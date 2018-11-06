@@ -4,6 +4,7 @@ bus::bus(int TP)
 {
   TalkPin = TP;
   pinMode(TalkPin, OUTPUT);
+  digitalWrite(TalkPin,LOW);
 }//END bus::bus(...)
 
 int bus::send_data(byte code, unsigned int value)
@@ -12,8 +13,7 @@ int bus::send_data(byte code, unsigned int value)
     code &= 0x0F;              //make sure that code only uses last 4Bit
     code |= ID;                     //integrade ID(0000AAAA) into code(0000CCCC) => code = AAAACCCC
 
-    float time_end = millis() + time_out;   //Define time for timeout
-
+    
     byte data[8] = {start_byte, code, 0xFF ^ code, 0, 0, 0 , 0 , stop_byte};
     data[3] = (value & 0xFF00) >> 8;
     data[5] = (value & 0x00FF);
@@ -21,6 +21,7 @@ int bus::send_data(byte code, unsigned int value)
     data[6] = 0xFF ^ data[5];
 
     digitalWrite(TalkPin, HIGH);    //set TalkPin high to use Bus
+    
     for (int i = 0; i < 8; i++)
       Serial.write(data[i]);        //send data package
     digitalWrite(TalkPin, LOW);     //set TalkPin low to set the bus free
