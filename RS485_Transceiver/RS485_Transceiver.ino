@@ -2,13 +2,7 @@
 
 #define enablePin   4
 
-byte msg1 = 0;
-byte msg2 = 0;
-
 bool status = false;
-bool mode = false;
-uint8_t msg;
-uint16_t value;
 
 double time;
 
@@ -17,29 +11,50 @@ bus bus(enablePin);
 void setup() {
   pinMode(13, OUTPUT);
   pinMode(6, OUTPUT);
-  digitalWrite(6,LOW);
+  digitalWrite(6, LOW);
   Serial.begin(115200);
 }
 
 void loop() {
-  if (time < millis()) {
+  /*
+    if (time < millis()) {
     time = millis() + 100;
-    if (mode) {
-      bus.send(on_byte, 0x3456);
-      mode = false;
+    if (status) {
+      bus.send(M_start, M_start);
+      status = false;
     }
     else {
-      bus.send(off_byte, 0xABCD);
-      mode = true;
+      bus.send(M_stop, M_stop);
+      status = true;
+    }
+    }
+  */
+}
+
+void serialEvent() {
+  uint8_t ID, code;
+  uint16_t value;
+
+  if (bus.get(ID, code, value)) {
+    switch (code) {
+      case C_setID:
+        bus.set_ID(ID);
+        bus.send(code, value);
+        break;
+      case C_gameM:
+        gameMode(value);
+        bus.send(code, value);
+        break;
+      default:
+        break;
     }
   }
 }
-void serialEvent() {
-  if (bus.get(msg, value)) {
-    if (msg == on_byte)
-      digitalWrite(13, HIGH);
-    if (msg == off_byte)
-      digitalWrite(13, LOW);
-  }
+
+void gameMode(uint16_t _mode) {
+  if (_mode == M_start)
+    digitalWrite(13, HIGH);
+  else if (_mode == M_stop)
+    digitalWrite(13, LOW);
 }
 
