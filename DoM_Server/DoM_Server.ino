@@ -1,37 +1,78 @@
 #include "DoM_Server.h"
+#include "privat.h"     //header where my WiFi settings are stored
+#include "functions.h"
+
 
 #define enablePin   4
 
-uint16_t duration;
 uint8_t status;
 double target_time;
+uint16_t old_sensetiv;
+uint16_t old_duration;
 
 bus bus(enablePin);
 
 void setup() {
-  duration = get_duration();
+  //duration = get_duration();
   Serial.begin(115200);
+
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) delay(500);
+  Serial.println(WiFi.localIP());
+  WiFi.mode(WIFI_STA);
+
+  server.on("/",          handleMain);
+  server.on("/set",       handleSet);
+  server.on("/xml",       handleXML);
+  server.on("/setESPval", handleESPval);
+  server.begin();
+
+  mode_w = "Hallo";
+
 }
 
 void loop() {
+  server.handleClient();
+  serialEvent();
+  //------------------------------------------------------------------------------------------------------------------------
+
+
   if (target_time <= millis() && status == M_ready) {
     target_time += 1000;
     status = M_set;
+    mode_w = "SET";
     bus.send(C_gameM, M_set);
     digitalWrite(13, LOW);
   }
   else if (target_time <= millis() && status == M_set) {
     target_time += (duration * 1000);
     status = M_start;
+    mode_w = "GO!";
     bus.send(C_gameM, M_start);
     digitalWrite(13, HIGH);
   }
   else if (target_time <= millis() && status == M_start) {
     status = M_stop;
+    mode_w = "FINISH";
     bus.send(C_gameM, M_stop);
     digitalWrite(13, LOW);
   }
+
+  if (status == M_start) {
+    rtime = target_time - millis();
+  }
+  if (sensetiv != old_sensetiv) {
+    if (bus.send(C_setTH, sensetiv))
+      old_sensetiv = sensetiv;
+  }
+  if (duration != old_duration) {
+    if (bus.send(C_setTime, duration)) {
+      old_duration = duration;
+      save_duration(duration);
+    }
+  }
 }
+
 
 void serialEvent() {
   uint8_t ID, code;
@@ -51,6 +92,10 @@ void serialEvent() {
         save_duration(duration);
         bus.send(code, value);
         break;
+      case C_value:
+        if (status == M_start)
+          counter = value;
+        break;
       default:
         break;
     }
@@ -60,6 +105,8 @@ void serialEvent() {
 void gameMode(uint16_t _mode) {
   if (_mode == M_tstart) {
     status = M_ready;
+    mode_w = "READY";
+    counter = 0;
     target_time = millis() + 1000;
     digitalWrite(13, HIGH);
     bus.send(C_gameM, M_ready);
