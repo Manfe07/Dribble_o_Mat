@@ -38,7 +38,6 @@ namespace Dribble_O_Mat_2._1
             this.Topmost = true;
         }
         
-
         private void button_Click(object sender, RoutedEventArgs e)
         {
             BumperListener.Countdown();                        
