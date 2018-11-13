@@ -69,7 +69,6 @@ namespace Dribble_O_Mat_2._1
             _mainWindow.SerialDisconnectButton.IsEnabled = false;
         }
 
-
         Boolean status = false;
         Boolean taster = true;
 
@@ -101,12 +100,11 @@ namespace Dribble_O_Mat_2._1
             taster = false;
 
             var countdown = new System.Timers.Timer(50);
-
             var finishTime = DateTime.Now + new TimeSpan(0,0,4);
 
-            var finished = false;
+            //may remove "var finished" ?
+            //var finished = false;
             
-
             this.CurrentBumps = 0;
 
             countdown.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
@@ -123,7 +121,6 @@ namespace Dribble_O_Mat_2._1
                         Settings.GameModeText = "SET";
                     Debug.WriteLine(Settings.GameModeText);
                     //this.Settings.Time_Remaining = remaining;
-
                 }));
 
                 if (currentTime > finishTime)
@@ -178,23 +175,21 @@ namespace Dribble_O_Mat_2._1
         public void Finish()
         {
             App.Current.Dispatcher.BeginInvoke(new Action(() =>
-               {
-                   this.Settings.Time_Remaining = new TimeSpan(0);
-                   _mainWindow.button_Start.IsEnabled = true;
-                   this.Settings.Running = false;
-                   status = false;
-                   taster = true;
-                   this.Settings.GameModeText = "FINISH";
+            {
+                this.Settings.Time_Remaining = new TimeSpan(0);
+                _mainWindow.button_Start.IsEnabled = true;
+                this.Settings.Running = false;
+                status = false;
+                taster = true;
+                this.Settings.GameModeText = "FINISH";
 
-                   if (this.CurrentBumps > this.Settings.Highscore)
-                   {
-                       this.Settings.Highscore = this.CurrentBumps;                       
-                   }
-
-               }));
+                if (this.CurrentBumps > this.Settings.Highscore)
+                {
+                    this.Settings.Highscore = this.CurrentBumps;                       
+                }
+            }));
         }
-
-        
+                
         private void ListenSerialPort()
         {
             while(SerialIsConnected())
