@@ -3,7 +3,7 @@
 #include "website.h"
 
 
-#define enablePin   D4
+#define enablePin   D2
 
 uint8_t status;
 double target_time;
