@@ -56,7 +56,7 @@ void buildSet() {
   setPage += "<h1>Dribble O Mat</h1><BR><h2>Settings</h2><BR><BR>\n";
   setPage += "Duration (sec): <input type='number' id='duration' style='width:50px;' value = " + (String)duration + ">\n";
   setPage += "<button onclick='duration_set()',>Set</button><BR>\n";
-  setPage += "sensetiv_1ity: <input type='number' id='sensetiv' style='width:50px;' value = " + (String)sensetiv + ">\n";
+  setPage += "Sensetivity: <input type='number' id='sensetiv' style='width:50px;' value = " + (String)sensetiv + ">\n";
   setPage += "<button onclick='sensetiv_set()',>Set</button><BR>\n";
   setPage += "</BODY>\n";
   setPage += "</HTML>\n";
