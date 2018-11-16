@@ -1,9 +1,13 @@
-#include "bus.h"
+#include <RS485_bus.h>
+#include <Wire.h>
 
-#define threshold_adr   5   //EEPROM-adress of the threshold
-#define TalkPin 4           //TalkPin of the bus
+const int threshold_adr = 5;   //EEPROM-adress of the threshold
+const int TalkPin = 4;           //TalkPin of the bus
+const int MPU6050_addr = 0x68;
 
-unsigned int threshold;     //threshold value of the Sensor
+int16_t value;
+uint16_t threshold;     //threshold value of the Sensor
+
 unsigned int counter = 0;   //counter for the hits
 bool trigger = false;       //bool state if it was allready triggered or not
 bool running = false;       //bool state if game is running or not
@@ -12,31 +16,34 @@ bool running = false;       //bool state if game is running or not
 bus bus(TalkPin);
 
 void setup() {
-
+  Wire.begin();
+  Wire.beginTransmission(MPU6050_addr);
+  Wire.write(0x6B);
+  Wire.write(0);
+  Wire.endTransmission(true);
   Serial.begin(115200);
 
   //get threshold-value from EEPROM
   threshold = ((EEPROM.read(threshold_adr) << 8) | EEPROM.read(threshold_adr + 1));
+  //set_threshold(5000);
 }//END void setup()
 
 
 void loop() {
-  /*
+  value = MPU_value();
   if (running) {                              //if running is enabled
-    if (digitalRead(5) && !trigger) {
+    //if (true) {                              //if running is enabled
+    if ((value > (int)threshold) && !trigger) {
       counter ++;
       trigger = true;
-      bus.send_data(C_value, counter);
+      bus.send(C_value, counter);
+      //Serial.println("HIGH");
     }
-    else if (!digitalRead(5) && trigger) {
+    else if ((value < 0) && trigger) {
       trigger = false;
+      //Serial.println("LOW");
     }
   }
-  */
-  bus.send(C_value, 1);
-  delay(250);
-  bus.send(C_value, 0);
-  delay(250);
 }//END void loop()
 
 
@@ -57,8 +64,8 @@ void serialEvent() {
         break;
 
       case C_setTH:
-        if (ID = bus.get_ID() )      //if msg_ID == my_ID
-          set_threshold(value);   //set the threshold of the sensor
+        //if (ID = bus.get_ID() )      //if msg_ID == my_ID
+        set_threshold(value);   //set the threshold of the sensor
         break;
 
       default:
@@ -93,3 +100,15 @@ void set_threshold(unsigned int value) {
   EEPROM.write(threshold_adr, th1);     //store the bytes in EEPROM
   EEPROM.write(threshold_adr + 1, th2);
 }//END void set_threshold(...)
+
+int16_t MPU_value() {
+  int16_t buf;
+  Wire.beginTransmission(MPU6050_addr);
+  Wire.write(0x3F);
+  Wire.endTransmission(false);
+  Wire.requestFrom(MPU6050_addr, 2, true);
+  buf = Wire.read() << 8 | Wire.read();
+  buf -= 15000;
+  return buf;
+}
+
