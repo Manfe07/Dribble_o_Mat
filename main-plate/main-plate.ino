@@ -32,7 +32,6 @@ void setup() {
 void loop() {
   value = MPU_value();
   if (running) {                              //if running is enabled
-    //if (true) {                              //if running is enabled
     if ((value > (int)threshold) && !trigger) {
       counter ++;
       trigger = true;
