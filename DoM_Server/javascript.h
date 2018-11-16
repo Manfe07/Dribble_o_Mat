@@ -1,6 +1,4 @@
-String mainPaige, setPaige, javaScript, XML, mode_w;
-const int sliderMAX = 1;        // This sets the number of sliders you want
-int sliderVal[sliderMAX] = {60}, ESPval[sliderMAX];
+String javaScript;
 
 void buildJavascript() {
   javaScript = "<SCRIPT>\n";
@@ -24,8 +22,10 @@ void buildJavascript() {
   javaScript += "        document.getElementById('runtime').innerHTML=xmlmsg;\n";
   javaScript += "        xmlmsg=xmlDoc.getElementsByTagName('mode')[0].firstChild.nodeValue;\n";
   javaScript += "        document.getElementById('gameMode').innerHTML=xmlmsg;\n";
-  javaScript += "        xmlmsg=xmlDoc.getElementsByTagName('counter')[0].firstChild.nodeValue;\n";
-  javaScript += "        document.getElementById('hits').innerHTML=xmlmsg;\n";
+  javaScript += "        xmlmsg=xmlDoc.getElementsByTagName('counter_1')[0].firstChild.nodeValue;\n";
+  javaScript += "        document.getElementById('hits_1').innerHTML=xmlmsg;\n";
+  javaScript += "        xmlmsg=xmlDoc.getElementsByTagName('counter_2')[0].firstChild.nodeValue;\n";
+  javaScript += "        document.getElementById('hits_2').innerHTML=xmlmsg;\n";
   javaScript += "        xmlmsg=xmlDoc.getElementsByTagName('sensetivVal')[0].firstChild.nodeValue;\n";
   javaScript += "        document.getElementById('sensetiv').innerHTML=xmlmsg;\n";
   javaScript += "        xmlmsg=xmlDoc.getElementsByTagName('durationVal')[0].firstChild.nodeValue;\n";
@@ -35,7 +35,7 @@ void buildJavascript() {
   javaScript += "    xmlHttp.open('PUT','xml',true);\n";
   javaScript += "    xmlHttp.send(null);\n";
   javaScript += "  }\n";
-  javaScript += "  setTimeout('process()',100);\n";
+  javaScript += "  setTimeout('process()',50);\n";
   javaScript += "}\n";
 
   javaScript += "function duration_set(){\n";

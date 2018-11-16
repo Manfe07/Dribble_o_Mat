@@ -1,9 +1,9 @@
 #include "DoM_Server.h"
 #include "privat.h"     //header where my WiFi settings are stored
-#include "functions.h"
+#include "website.h"
 
 
-#define enablePin   4
+#define enablePin   D4
 
 uint8_t status;
 double target_time;
@@ -21,13 +21,15 @@ void setup() {
   Serial.println(WiFi.localIP());
   WiFi.mode(WIFI_STA);
 
-  server.on("/",          handleMain);
+  server.on("/",          handlePage_1);
+  server.on("/1",         handlePage_1);
+  server.on("/2",         handlePage_2);
   server.on("/set",       handleSet);
   server.on("/xml",       handleXML);
   server.on("/setESPval", handleESPval);
   server.begin();
 
-  mode_w = "Hallo";
+  modeText = "Hallo";
 
 }
 
@@ -40,20 +42,20 @@ void loop() {
   if (target_time <= millis() && status == M_ready) {
     target_time += 1000;
     status = M_set;
-    mode_w = "SET";
+    modeText = "SET";
     bus.send(C_gameM, M_set);
     digitalWrite(13, LOW);
   }
   else if (target_time <= millis() && status == M_set) {
     target_time += (duration * 1000);
     status = M_start;
-    mode_w = "GO!";
+    modeText = "GO!";
     bus.send(C_gameM, M_start);
     digitalWrite(13, HIGH);
   }
   else if (target_time <= millis() && status == M_start) {
     status = M_stop;
-    mode_w = "FINISH";
+    modeText = "FINISH";
     bus.send(C_gameM, M_stop);
     digitalWrite(13, LOW);
   }
@@ -93,8 +95,12 @@ void serialEvent() {
         bus.send(code, value);
         break;
       case C_value:
-        if (status == M_start)
-          counter = value;
+        if (status == M_start) {
+          if (ID == 0x01)
+            counter_1 = value;
+          if (ID == 0x02)
+            counter_2 = value;
+        }
         break;
       default:
         break;
@@ -105,8 +111,8 @@ void serialEvent() {
 void gameMode(uint16_t _mode) {
   if (_mode == M_tstart) {
     status = M_ready;
-    mode_w = "READY";
-    counter = 0;
+    modeText = "READY";
+    counter_1 = 0;
     target_time = millis() + 1000;
     digitalWrite(13, HIGH);
     bus.send(C_gameM, M_ready);

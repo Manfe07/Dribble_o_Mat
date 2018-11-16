@@ -1,4 +1,5 @@
 #include "DoM_Server.h"
+#include <EEPROM.h>
 
 uint16_t get_duration() {
   uint16_t value = (EEPROM.read(dr_adr) << 8) | (EEPROM.read(dr_adr + 1));
