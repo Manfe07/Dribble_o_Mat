@@ -6,7 +6,7 @@
 unsigned long wait000 = 0UL, wait001 = 1000UL;
 uint16_t counter_1 = 1;
 uint16_t counter_2 = 2;
-uint16_t sensetiv = 400;
+uint16_t sensetiv = 5000;
 uint16_t duration = 30;
 double rtime = 0;
 

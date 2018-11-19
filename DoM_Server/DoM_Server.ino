@@ -1,41 +1,39 @@
 #include "DoM_Server.h"
-#include "privat.h"     //header where my WiFi settings are stored
 #include "website.h"
+#include <WiFiManager.h>
 
-//#define M_AP
-#define M_ST
+//#define DEBUG
 
-#define enablePin   D2
+const int enablePin = D2;
+const int wifiPin = D5;
 
 uint8_t status;
 double target_time;
 uint16_t old_sensetiv;
 uint16_t old_duration;
 
+WiFiManager wifiManager;
 bus bus(enablePin);
 
 void setup() {
   //duration = get_duration();
   Serial.begin(115200);
+  pinMode(wifiPin, INPUT);
+  pinMode(LED_BUILTIN , OUTPUT);
+#ifndef DEBUG
+  wifiManager.setDebugOutput(false);
+#endif
+  if (digitalRead(wifiPin)) {
+    digitalWrite(LED_BUILTIN, LOW);
+    wifiManager.autoConnect("DoM-Wifi");
+  }
+  else {
+    digitalWrite(LED_BUILTIN, HIGH);
+    wifiManager.startConfigPortal("DoM-Wifi-Setup");
+  }
 
-#ifdef M_ST
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) delay(500);
+  Serial.println(WiFi.SSID());
   Serial.println(WiFi.localIP());
-  WiFi.mode(WIFI_STA);
-#endif
-
-#ifdef M_AP
-  IPAddress    apIP(42, 42, 42, 42);  // Defining a static IP address: local & gateway
-  WiFi.mode(WIFI_AP_STA);
-  WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));   // subnet FF FF FF 00
-
-  WiFi.softAP("DoM", "");
-
-  IPAddress myIP = WiFi.softAPIP();
-  Serial.print("AP IP address: ");
-  Serial.println(myIP);
-#endif
 
   server.on("/",          handlePage_1);
   server.on("/1",         handlePage_1);
