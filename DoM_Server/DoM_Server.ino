@@ -8,8 +8,8 @@
 
 //#define DEBUG
 
-const int enablePin = D3;
-const int wifiPin = D5;
+const int enablePin = D5;
+const int wifiPin = D3;
 
 uint8_t status;
 double target_time;
