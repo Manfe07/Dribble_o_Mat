@@ -1,10 +1,14 @@
 #include "DoM_Server.h"
 #include "website.h"
 #include <WiFiManager.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include "font.h"
 
 //#define DEBUG
 
-const int enablePin = D2;
+const int enablePin = D3;
 const int wifiPin = D5;
 
 uint8_t status;
@@ -12,28 +16,46 @@ double target_time;
 uint16_t old_sensetiv;
 uint16_t old_duration;
 
+
+Adafruit_SSD1306 display(LED_BUILTIN);
 WiFiManager wifiManager;
 bus bus(enablePin);
 
 void setup() {
-  //duration = get_duration();
-  Serial.begin(115200);
   pinMode(wifiPin, INPUT);
-  pinMode(LED_BUILTIN , OUTPUT);
+  Serial.begin(115200);
+    
 #ifndef DEBUG
   wifiManager.setDebugOutput(false);
 #endif
-  if (digitalRead(wifiPin)) {
-    digitalWrite(LED_BUILTIN, LOW);
-    wifiManager.autoConnect("DoM-Wifi");
-  }
-  else {
-    digitalWrite(LED_BUILTIN, HIGH);
+
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  display.setFont(&Dialog_plain_12);
+  display.setTextColor(WHITE);
+
+  if (!digitalRead(wifiPin)) {
+    display.clearDisplay();
+    display.setCursor(0, 22);
+    display.println(F("      (((WIFI)))\n  CONFIGURATION\n        MODE"));
+    display.display();
     wifiManager.startConfigPortal("DoM-Wifi-Setup");
   }
-
-  Serial.println(WiFi.SSID());
-  Serial.println(WiFi.localIP());
+  else {
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.println(F("\n\n   Dribble O Mat\n      booting..."));
+    display.display();      // Show initial text
+    wifiManager.autoConnect("DoM-Wifi");
+  }
+  
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.println("");
+  display.println("IP:");
+  display.println(WiFi.localIP());
+  display.println("SSID:");
+  display.println(WiFi.SSID());
+  display.display();
 
   server.on("/",          handlePage_1);
   server.on("/1",         handlePage_1);
@@ -96,10 +118,6 @@ void serialEvent() {
 
   if (bus.get(ID, code, value)) {
     switch (code) {
-      case C_setID:
-        bus.set_ID(ID);
-        bus.send(code, value);
-        break;
       case C_gameM:
         gameMode(value);
         break;
